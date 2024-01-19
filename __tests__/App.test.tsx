@@ -6,8 +6,12 @@ import {RootNavigator} from '../src/navigators/root';
 import { expect, jest, describe, test } from '@jest/globals';
 
 import '@testing-library/jest-native/extend-expect'; 
+import { HomeScreen } from 'screens';
 
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
+jest.mock('react-native-calendars', () => {
+  return { CalendarList: () => 'CalendarList' };
+});
 
 describe('Testing react navigation', () => {
   test('Start page - Auth', async () => {
@@ -36,5 +40,14 @@ describe('Testing react navigation', () => {
     fireEvent.press(screen.getByText('On Home'));
 
     expect(screen.getByText('Home Screen')).toBeOnTheScreen();
+  });
+});
+
+describe('Testing HomeScreen', () => {
+  test('Renders CalendarList', () => {
+    waitFor(() => render(<HomeScreen />));
+
+    const calendarList = screen;
+    expect(JSON.stringify(calendarList).includes('CalendarList')).toBeTruthy();
   });
 });
