@@ -6,6 +6,8 @@ import {agendaItems, getMarkedDates} from 'mocks/agendaItems';
 import AgendaItem from 'mocks/AgendaItem';
 import {getTheme, themeColor, lightThemeColor} from 'mocks/theme';
 
+import './locales';
+
 const leftArrowIcon = require('../../img/previous.png');
 const rightArrowIcon = require('../../img/next.png');
 const ITEMS: any[] = agendaItems;
@@ -61,8 +63,9 @@ const ExpandableCalendar = (props: Props) => {
           // disableAllTouchEventsForDisabledDays
           firstDay={1}
           markedDates={marked.current}
-          leftArrowImageSource={leftArrowIcon}
-          rightArrowImageSource={rightArrowIcon}
+          disableArrowLeft
+          disableArrowRight
+          style={{ marginTop: 50 }}
           // animateScroll
           // closeOnDayPress={false}
         />

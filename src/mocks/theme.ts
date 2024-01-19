@@ -8,12 +8,12 @@ export function getTheme() {
 
   return {
     // arrows
-    arrowColor: 'black',
+    arrowColor: 'transparent',
     arrowStyle: {padding: 0},
     // knob
-    expandableKnobColor: themeColor,
+    expandableKnobColor: 'grey',
     // month
-    monthTextColor: 'black',
+    monthTextColor: themeColor,
     textMonthFontSize: 16,
     textMonthFontFamily: 'HelveticaNeue',
     textMonthFontWeight: 'bold' as const,
@@ -24,7 +24,7 @@ export function getTheme() {
     textDayHeaderFontWeight: 'normal' as const,
     // dates
     dayTextColor: themeColor,
-    todayTextColor: '#af0078',
+    todayTextColor: themeColor,
     textDayFontSize: 18,
     textDayFontFamily: 'HelveticaNeue',
     textDayFontWeight: '500' as const,
@@ -38,6 +38,10 @@ export function getTheme() {
     dotColor: themeColor,
     selectedDotColor: 'white',
     disabledDotColor: disabledColor,
-    dotStyle: {marginTop: -2}
+    dotStyle: {marginTop: -2},
+
+    // general
+
+    calendarBackground: '#F8F8FA',
   };
 }
