@@ -10,7 +10,11 @@ import { HomeScreen } from 'screens';
 
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 jest.mock('react-native-calendars', () => {
-  return { CalendarList: () => 'CalendarList', ExpandableCalendar: () => 'ExpandableCalendar', AgendaList: () => 'AgendaList', CalendarProvider: () => 'CalendarProvider', WeekCalendar: () => 'WeekCalendar',  };
+  return { CalendarList: () => 'CalendarList', ExpandableCalendar: () => 'ExpandableCalendar', AgendaList: () => 'AgendaList', CalendarProvider: () => 'CalendarProvider', WeekCalendar: () => 'WeekCalendar', LocaleConfig: {
+    locales: {},
+    defaultLocale: ''
+  }
+};
 });
 
 describe('Testing react navigation', () => {
