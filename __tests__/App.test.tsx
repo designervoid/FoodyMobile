@@ -10,7 +10,7 @@ import { HomeScreen } from 'screens';
 
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 jest.mock('react-native-calendars', () => {
-  return { CalendarList: () => 'CalendarList' };
+  return { CalendarList: () => 'CalendarList', ExpandableCalendar: () => 'ExpandableCalendar', AgendaList: () => 'AgendaList', CalendarProvider: () => 'CalendarProvider', WeekCalendar: () => 'WeekCalendar',  };
 });
 
 describe('Testing react navigation', () => {
@@ -44,10 +44,10 @@ describe('Testing react navigation', () => {
 });
 
 describe('Testing HomeScreen', () => {
-  test('Renders CalendarList', () => {
+  test('Renders ExpandableCalendar (wrapped in CalendarProvider)', () => {
     waitFor(() => render(<HomeScreen />));
 
     const calendarList = screen;
-    expect(JSON.stringify(calendarList).includes('CalendarList')).toBeTruthy();
+    expect(JSON.stringify(calendarList).includes('CalendarProvider')).toBeTruthy();
   });
 });
