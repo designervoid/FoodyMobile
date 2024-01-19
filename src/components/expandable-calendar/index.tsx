@@ -42,6 +42,11 @@ const ExpandableCalendar = (props: Props) => {
       // onDateChanged={onDateChanged}
       // onMonthChange={onMonthChange}
       showTodayButton
+      style={{ marginTop: 0 }}
+      todayButtonStyle={{
+        position: 'absolute',
+        top: 70,
+      }}
       // disabledOpacity={0.6}
       theme={todayBtnTheme.current}
       // todayBottomMargin={16}
