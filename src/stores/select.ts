@@ -16,7 +16,7 @@ export function setModalVisible(value: boolean) {
     modalVisible.set(value);
 }
 
-export const selectedValue = atom("Choose the option");
+export const selectedValue = atom("Loading...");
 
 export function setSelectedValue(value: string) {
     selectedValue.set(value);

@@ -2,12 +2,16 @@ import React, { useRef, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import { useStore} from '@nanostores/react';
 import { selectedValue, setSelectedValue, buttonPosition, setButtonPosition, modalVisible, setModalVisible  } from 'stores';
+import useSWR from 'swr';
+import Config from "react-native-config";
+import { Platform } from 'react-native';
 
 export function Select() {
     const buttonRef = useRef<TouchableOpacity>(null);
     const currentValue = useStore(selectedValue);
     const currentPosition = useStore(buttonPosition);
     const visible = useStore(modalVisible);
+    const { data, isLoading, error } = useSWR(`${Config.BASE_URL}/get-food-types`, (endpoint) =>  fetch(endpoint).then((res) => res.json()));
 
     const options = ["Breakfast", "Lunch", "Dinner"];
 
@@ -19,17 +23,30 @@ export function Select() {
         }
     }, []);
 
+    useEffect(() => {
+        if (error) {
+            setSelectedValue('Something wrong...');
+        }
+    }, [error]);
+
+    useEffect(() => {
+        if (!isLoading && !error) {
+            setSelectedValue('Choose the option');
+        }
+    }, [isLoading, error]);
+
     return (
         <View style={styles.container}>
             <TouchableOpacity 
                 ref={buttonRef}
                 onPress={() => setModalVisible(true)} 
                 style={styles.touchable}
+                disabled={isLoading}
             >
                 <Text style={styles.selectedText}>{currentValue}</Text>
             </TouchableOpacity>
 
-            {currentValue !== "Choose the option" && (
+            {!isLoading && currentValue !== "Choose the option" && currentValue !== 'Loading...' && (
                 <Text style={styles.selectedOptions}>Selected: {currentValue}</Text>
             )}
 
@@ -45,7 +62,7 @@ export function Select() {
                             <View 
                                 style={[
                                     styles.modalView,
-                                    { top: currentPosition.y + currentPosition.height + 70 + 5 }
+                                    { top: Platform.OS === 'ios' ? currentPosition.y + currentPosition.height + 70 + 5  : currentPosition.y + currentPosition.height }
                                 ]}
                             >
                                 {options.map((option, index) => (
