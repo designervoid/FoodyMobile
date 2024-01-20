@@ -1,26 +1,19 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Modal, StyleSheet, Dimensions, TouchableWithoutFeedback, MeasureOnSuccessCallback } from 'react-native';
-
-type ParametersMeasureOnSuccessCallback = Parameters<MeasureOnSuccessCallback>;
-
-type ButtonPosition = {
-    width: ParametersMeasureOnSuccessCallback[2];
-    height: ParametersMeasureOnSuccessCallback[3];
-    x: ParametersMeasureOnSuccessCallback[4];
-    y: ParametersMeasureOnSuccessCallback[5];
-}
+import React, { useRef, useEffect } from 'react';
+import { View, Text, TouchableOpacity, Modal, StyleSheet, Dimensions, TouchableWithoutFeedback } from 'react-native';
+import { useStore} from '@nanostores/react';
+import { selectedValue, setSelectedValue, buttonPosition, setButtonPosition, modalVisible, setModalVisible  } from 'stores';
 
 export function Select() {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [selectedValue, setSelectedValue] = useState("Choose the option");
-    const [buttonPosition, setButtonPosition] = useState<ButtonPosition>({} as unknown as ButtonPosition);
     const buttonRef = useRef<TouchableOpacity>(null);
+    const currentValue = useStore(selectedValue);
+    const currentPosition = useStore(buttonPosition);
+    const visible = useStore(modalVisible);
 
     const options = ["Breakfast", "Lunch", "Dinner"];
 
     useEffect(() => {
         if (buttonRef.current) {
-            buttonRef.current.measure((fx, fy, width, height, px, py) => {
+            buttonRef.current.measure((_, __, width, height, px, py) => {
                 setButtonPosition({ x: px, y: py, width, height });
             });
         }
@@ -33,17 +26,17 @@ export function Select() {
                 onPress={() => setModalVisible(true)} 
                 style={styles.touchable}
             >
-                <Text style={styles.selectedText}>{selectedValue}</Text>
+                <Text style={styles.selectedText}>{currentValue}</Text>
             </TouchableOpacity>
 
-            {selectedValue !== "Choose the option" && (
-                <Text style={styles.selectedOptions}>Selected: {selectedValue}</Text>
+            {currentValue !== "Choose the option" && (
+                <Text style={styles.selectedOptions}>Selected: {currentValue}</Text>
             )}
 
             <Modal
-                animationType="slide"
+                animationType="fade"
                 transparent={true}
-                visible={modalVisible}
+                visible={visible}
                 onRequestClose={() => setModalVisible(false)}
             >
                 <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
@@ -52,7 +45,7 @@ export function Select() {
                             <View 
                                 style={[
                                     styles.modalView,
-                                    { top: buttonPosition.y + buttonPosition.height + 70 }
+                                    { top: currentPosition.y + currentPosition.height + 70 + 5 }
                                 ]}
                             >
                                 {options.map((option, index) => (
@@ -79,7 +72,7 @@ export function Select() {
 const styles = StyleSheet.create({
     container: {
         margin: 10,
-        padding: 5,
+        paddingHorizontal: 30,
     },
     touchable: {
         flexDirection: 'row',
