@@ -1,3 +1,7 @@
+import { Select } from "components/ui/select";
+
 export function MealAddScreen() {
-    return <></>;
+    return <>
+        <Select />
+    </>;
 }

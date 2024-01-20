@@ -5,7 +5,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import ExpandableCalendar from 'components/expandable-calendar';
+import ExpandableCalendar from 'components/ui/expandable-calendar';
 import { useTypedNavigation } from 'hooks';
 
 export function HomeScreen() {
