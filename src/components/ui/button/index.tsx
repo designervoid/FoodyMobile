@@ -1,9 +1,47 @@
-import { Button as ButtonBase } from "react-native";
+import React, { useMemo } from 'react';
+import { Text, TouchableOpacity, StyleSheet, StyleProp, TextStyle } from 'react-native';
 
-interface Props extends ButtonBase {
+type ButtonVariant = 'default' | 'green';
 
+interface ButtonProps {
+  variant?: ButtonVariant;
+  children: React.ReactNode;
+  onPress?: () => void;
+  style?: object;
+  textStyle?: StyleProp<TextStyle>;
 }
 
-export function Button(props: Props) {
-    return <ButtonBase title="" {...props} />;
-}
+const styles = StyleSheet.create({
+  button: {
+    height: 60,
+    // paddingHorizontal: 30,
+    borderRadius: 10,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 30,
+  },
+  buttonText: {
+    lineHeight: 56,
+    fontSize: 18,
+    textTransform: 'uppercase',
+    color: '#FFFFFF',
+    fontWeight: '600',
+  },
+  green: {
+    backgroundColor: '#3AC2C3',
+  },
+});
+
+export const Button: React.FC<ButtonProps> = ({ variant = 'default', children, onPress, style, textStyle }) => {
+  const buttonStyle = useMemo(() => {
+    return [styles.button, variant === 'green' && styles.green, style];
+  }, [styles.button, variant, styles.green, style]);
+  const buttonTextStyles = useMemo(() => [styles.buttonText, textStyle], [textStyle]);
+
+  return (
+    <TouchableOpacity style={buttonStyle} onPress={onPress}>
+      <Text style={buttonTextStyles}>{children}</Text>
+    </TouchableOpacity>
+  );
+};

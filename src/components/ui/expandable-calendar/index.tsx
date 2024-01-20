@@ -1,5 +1,5 @@
 import React, {useRef, useCallback} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {ExpandableCalendar as ExpandableCalendarBase, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 import testIDs from 'utils/testIDs';
 import {agendaItems, getMarkedDates} from 'mocks/agendaItems';
@@ -30,8 +30,17 @@ const ExpandableCalendar = (props: Props) => {
   //   console.log('ExpandableCalendarScreen onMonthChange: ', dateString);
   // }, []);
 
-  const renderItem = useCallback(({item}: any) => {
-    return <AgendaItem item={item}/>;
+  const renderItem = useCallback(({item, index, section}: any) => {
+    const isLastSection = ITEMS[ITEMS.length - 1].title === section.title;
+    const isLastItemInSection = index === section.data.length - 1;
+
+    const itemStyle = isLastSection && isLastItemInSection ? { marginBottom: 100 } : {};
+    
+    return (
+      <View style={itemStyle}>
+        <AgendaItem item={item}/>
+      </View>
+    );
   }, []);
 
   return (
@@ -65,7 +74,7 @@ const ExpandableCalendar = (props: Props) => {
           markedDates={marked.current}
           disableArrowLeft
           disableArrowRight
-          style={{ marginTop: 50 }}
+          style={{ marginTop: 0, }}
           // animateScroll
           // closeOnDayPress={false}
         />
@@ -94,6 +103,6 @@ const styles = StyleSheet.create({
   section: {
     backgroundColor: lightThemeColor,
     color: 'grey',
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
   }
 });

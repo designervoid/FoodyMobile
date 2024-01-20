@@ -1,4 +1,3 @@
-import isEmpty from 'lodash/isEmpty';
 import React, {useCallback} from 'react';
 import {StyleSheet, Alert, View, Text, TouchableOpacity, Button} from 'react-native';
 import testIDs from 'utils/testIDs';
@@ -6,6 +5,12 @@ import testIDs from 'utils/testIDs';
 interface ItemProps {
   item: any;
 }
+
+const isObjectEmpty = (obj: any) => {
+  if (typeof obj !== 'object' || obj === null) return true;
+
+  return Object.keys(obj).length === 0;
+};
 
 const AgendaItem = (props: ItemProps) => {
   const {item} = props;
@@ -18,7 +23,7 @@ const AgendaItem = (props: ItemProps) => {
     Alert.alert(item.title);
   }, []);
 
-  if (isEmpty(item)) {
+  if (isObjectEmpty(item)) {
     return (
       <View style={styles.emptyItem}>
         <Text style={styles.emptyItemText}>No Events Planned Today</Text>
@@ -49,7 +54,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderBottomWidth: 1,
     borderBottomColor: 'lightgrey',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   itemHourText: {
     color: 'black'
