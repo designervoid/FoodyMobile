@@ -1,19 +1,20 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import { useStore} from '@nanostores/react';
 import { selectedValue, setSelectedValue, buttonPosition, setButtonPosition, modalVisible, setModalVisible  } from 'stores';
-import useSWR from 'swr';
-import Config from "react-native-config";
 import { Platform } from 'react-native';
+import { useGetFoodTypes } from 'repository';
 
 export function Select() {
     const buttonRef = useRef<TouchableOpacity>(null);
     const currentValue = useStore(selectedValue);
     const currentPosition = useStore(buttonPosition);
     const visible = useStore(modalVisible);
-    const { data, isLoading, error } = useSWR(`${Config.BASE_URL}/get-food-types`, (endpoint) =>  fetch(endpoint).then((res) => res.json()));
+    const { data, isLoading, error } = useGetFoodTypes();
 
-    const options = ["Breakfast", "Lunch", "Dinner"];
+    const options = useMemo(() => {
+        return data?.map((item) => item.name);
+    }, [data]);
 
     useEffect(() => {
         if (buttonRef.current) {
@@ -46,10 +47,6 @@ export function Select() {
                 <Text style={styles.selectedText}>{currentValue}</Text>
             </TouchableOpacity>
 
-            {!isLoading && currentValue !== "Choose the option" && currentValue !== 'Loading...' && (
-                <Text style={styles.selectedOptions}>Selected: {currentValue}</Text>
-            )}
-
             <Modal
                 animationType="fade"
                 transparent={true}
@@ -65,7 +62,7 @@ export function Select() {
                                     { top: Platform.OS === 'ios' ? currentPosition.y + currentPosition.height + 70 + 5  : currentPosition.y + currentPosition.height }
                                 ]}
                             >
-                                {options.map((option, index) => (
+                                {options?.map((option, index) => (
                                     <TouchableOpacity
                                         key={index}
                                         style={styles.option}
