@@ -14,6 +14,7 @@ export function AuthScreen() {
     <View style={styles.container}>
       <Text>Auth Screen</Text>
       <Button title="On Home" onPress={() => { navigation.navigate('Home') }}></Button>
+      <Button title="On Meal Add" onPress={() => { navigation.navigate('Meal', { screen: 'MealAdd' }) }}></Button>
     </View>
   );
 }

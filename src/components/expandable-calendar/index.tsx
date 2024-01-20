@@ -8,8 +8,6 @@ import {getTheme, themeColor, lightThemeColor} from 'mocks/theme';
 
 import './locales';
 
-const leftArrowIcon = require('../../img/previous.png');
-const rightArrowIcon = require('../../img/next.png');
 const ITEMS: any[] = agendaItems;
 
 interface Props {
