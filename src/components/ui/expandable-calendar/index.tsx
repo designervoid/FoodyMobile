@@ -44,6 +44,7 @@ const ExpandableCalendar = (props: Props) => {
       // disabledOpacity={0.6}
       theme={todayBtnTheme.current}
       // todayBottomMargin={16}
+      testID="CalendarProvider"
     >
       {weekView ? (
         <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current}/>

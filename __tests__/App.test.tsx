@@ -3,10 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
 
 import {RootNavigator} from '../src/navigators/root';
-import { expect, jest, describe, test } from '@jest/globals';
 
 import '@testing-library/jest-native/extend-expect'; 
-import { HomeScreen } from 'screens';
 
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 jest.mock('react-native-calendars', () => {
@@ -16,6 +14,15 @@ jest.mock('react-native-calendars', () => {
   }
 };
 });
+jest.mock('@nanostores/react', () => ({
+  useStore: jest.fn(() => ({}))
+}));
+
+jest.mock('nanostores', () => ({
+  atom: jest.fn(() => ({}))
+}));
+
+jest.mock('react-native-config', () => ({}));
 
 describe('Testing react navigation', () => {
   test('Start page - Auth', async () => {
@@ -49,9 +56,16 @@ describe('Testing react navigation', () => {
 
 describe('Testing HomeScreen', () => {
   test('Renders ExpandableCalendar (wrapped in CalendarProvider)', () => {
-    waitFor(() => render(<HomeScreen />));
+    const component = (
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    );
 
-    const calendarList = screen;
-    expect(JSON.stringify(calendarList).includes('CalendarProvider')).toBeTruthy();
+    waitFor(() => render(component));
+
+    fireEvent.press(screen.getByText('On Home'));
+
+    expect(JSON.stringify(screen).includes('CalendarProvider')).toBeTruthy();
   });
 });

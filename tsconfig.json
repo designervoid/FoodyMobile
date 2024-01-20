@@ -8,6 +8,7 @@
       "@screens/*": ["src/screens/*"],
       "@types/*": ["src/types/*"],
     },
-    "allowJs": true
+    "allowJs": true,
+    "types": ["jest"]
   }
 }
