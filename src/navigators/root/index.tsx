@@ -1,25 +1,30 @@
-import { NativeStackHeaderProps, createNativeStackNavigator } from '@react-navigation/native-stack';
+import { CardStyleInterpolators, TransitionSpecs, StackHeaderProps, createStackNavigator } from '@react-navigation/stack';
 import { RootStackParamList } from 'types';
 import { AuthScreen, HomeScreen } from 'screens';
 import { MealNavigator } from 'navigators/meal';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useTypedNavigation } from 'hooks';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 
-const EmptyHeader = (_: NativeStackHeaderProps) => <View></View>;
+const EmptyHeader = (_: StackHeaderProps) => <View></View>;
 
 const createEmptyHeader = () => {
     return {
-        header: (props: NativeStackHeaderProps) => <EmptyHeader {...props} />,
+        header: (props: StackHeaderProps) => <EmptyHeader {...props} />,
     }
 }
 
-export const provideOptions = (payload?: NativeStackHeaderProps['options'], withEmptyHeader = false) => {
+export const provideOptions = (payload?: StackHeaderProps['options'], withEmptyHeader = false) => {
     return {
         options: {
             ...(withEmptyHeader && createEmptyHeader()),
             ...payload,
+            transitionSpec: {
+                open: TransitionSpecs.TransitionIOSSpec,
+                close: TransitionSpecs.TransitionIOSSpec,
+            },
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }
     }
 }
@@ -33,8 +38,8 @@ export function RootNavigator() {
 
             return <TouchableOpacity onPress={() => {
                 navigation.goBack();
-            }}><Text>Back</Text></TouchableOpacity>;
-        }, gestureEnabled: false })}
+            }} style={{ paddingLeft: 20 }}><Text>Back</Text></TouchableOpacity>;
+        }, gestureEnabled: true })}
         />
     </Stack.Navigator>
 }
