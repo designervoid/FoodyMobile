@@ -49,7 +49,8 @@ const ExpandableCalendar = (props: Props) => {
 
   return (
     <CalendarProvider
-      date={currentDate.toISOString().split('T')[0]}
+      // work around tests
+      date={currentDate.split ? currentDate.split('T')[0] : ''}
       onDateChanged={onDateChanged}
       // onMonthChange={onMonthChange}
       showTodayButton

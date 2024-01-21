@@ -6,7 +6,6 @@ import {RootNavigator} from '../src/navigators/root';
 
 import '@testing-library/jest-native/extend-expect'; 
 
-
 describe('Testing react navigation', () => {
   test('Start page - Auth', async () => {
     const component = (

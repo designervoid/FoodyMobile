@@ -1,6 +1,6 @@
 import { Button } from "components/ui/button";
 import { Select } from "components/ui/select";
-import { Dimensions, Platform, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { EdgeInsets, useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAddMealItem } from "repository/add-meal-item";
 import { useStore } from '@nanostores/react';
@@ -8,6 +8,7 @@ import { selectedValueRepository } from "stores";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MealStackParamList } from "navigators/meal";
 import Clock1 from 'assets/icons/clock-1.svg';
+import { useTypedNavigation } from "hooks";
 
 type Props = NativeStackScreenProps<MealStackParamList, "MealAdd">;
 
@@ -17,7 +18,8 @@ export function MealAddScreen(props: Props) {
     const insets = useSafeAreaInsets();
     const styles = stylesDynamic(insets);
     const { swrState, handleAddMealItem } = useAddMealItem();
-    const foodTypeId = useStore(selectedValueRepository);    
+    const foodTypeId = useStore(selectedValueRepository);
+    const navigation = useTypedNavigation();
 
     return <View style={styles.container}>
         <View style={{ marginTop: 31 }}>
@@ -31,9 +33,9 @@ export function MealAddScreen(props: Props) {
             <View style={{ paddingLeft: 52 }}>
                 <Text>{date}</Text>
             </View>
-            <View style={{ paddingLeft: 39.39 }}>
+            <TouchableOpacity style={{ paddingLeft: 39.39 }} onPress={() => navigation.goBack()}>
                 <Text>Go back</Text>
-            </View>
+            </TouchableOpacity>
         </View>
         <Button style={[(swrState.isMutating) && { backgroundColor: 'grey' }, styles.button]} variant="green" onPress={() => {
             if (foodTypeId && date) {
