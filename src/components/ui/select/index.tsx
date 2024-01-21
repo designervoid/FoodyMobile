@@ -32,9 +32,9 @@ export function Select() {
 
     useEffect(() => {
         if (!isLoading && !error) {
-            setSelectedValue('Choose the option');
+            if (!currentValue) setSelectedValue('Choose the option');
         }
-    }, [isLoading, error]);
+    }, [isLoading, error, currentValue]);
 
     return (
         <View style={styles.container}>
