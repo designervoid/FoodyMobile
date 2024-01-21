@@ -42,7 +42,7 @@ export function Select() {
                 ref={buttonRef}
                 onPress={() => setModalVisible(true)} 
                 style={styles.touchable}
-                disabled={isLoading}
+                disabled={isLoading || error}
             >
                 <Text style={styles.selectedText}>{currentValue}</Text>
             </TouchableOpacity>
@@ -59,7 +59,7 @@ export function Select() {
                             <View 
                                 style={[
                                     styles.modalView,
-                                    { top: Platform.OS === 'ios' ? currentPosition.y + currentPosition.height + 70 + 5  : currentPosition.y + currentPosition.height }
+                                    { top: Platform.OS === 'ios' ? currentPosition.y + currentPosition.height + 70 + 5  : currentPosition.y + (currentPosition.y / 4) + 5 }
                                 ]}
                             >
                                 {options?.map((option, index) => (
@@ -86,7 +86,6 @@ export function Select() {
 
 const styles = StyleSheet.create({
     container: {
-        margin: 10,
         paddingHorizontal: 30,
     },
     touchable: {

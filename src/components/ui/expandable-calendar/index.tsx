@@ -26,8 +26,8 @@ const ExpandableCalendar = (props: Props) => {
   });
   const currentDate = useStore(currentDateNS)
 
-  const onDateChanged = useCallback((date: string, updateSource: UpdateSources) => {
-    setCurrentDate(date);
+  const onDateChanged = useCallback((date: string, _: UpdateSources) => {
+    setCurrentDate(new Date(date));
   }, []);
 
   // const onMonthChange = useCallback(({dateString}) => {
@@ -49,7 +49,7 @@ const ExpandableCalendar = (props: Props) => {
 
   return (
     <CalendarProvider
-      date={currentDate!}
+      date={currentDate.toISOString().split('T')[0]}
       onDateChanged={onDateChanged}
       // onMonthChange={onMonthChange}
       showTodayButton
@@ -65,7 +65,7 @@ const ExpandableCalendar = (props: Props) => {
         <ExpandableCalendarBase
           testID={testIDs.expandableCalendar.CONTAINER}
           // horizontal={false}
-          // hideArrows
+          hideArrows
           // disablePan
           // hideKnob
           // initialPosition={ExpandableCalendar.positions.OPEN}
@@ -76,8 +76,6 @@ const ExpandableCalendar = (props: Props) => {
           // disableAllTouchEventsForDisabledDays
           firstDay={1}
           markedDates={marked.current}
-          disableArrowLeft
-          disableArrowRight
           style={{ marginTop: 0, }}
           // animateScroll
           // closeOnDayPress={false}

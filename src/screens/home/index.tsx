@@ -23,7 +23,7 @@ export function HomeScreen() {
       <Text>Home Screen</Text>
       <ExpandableCalendar />
       <View style={{ position: 'absolute', width: '100%', height: 60, bottom: styles.button.bottom, justifyContent: 'center', alignItems: 'center' }}>
-        <Button onPress={() => { currentDate && navigation.navigate('Meal', { screen: 'MealAdd', params: { date: currentDate } }) }} style={{ 
+        <Button onPress={() => { currentDate && navigation.navigate('Meal', { screen: 'MealAdd', params: { date: currentDate.toISOString().split('T')[0] } }) }} style={{ 
           width: 64,
           height: 64,
         }} textStyle={{ padding: 0, margin: 0 }} variant="green">+</Button>

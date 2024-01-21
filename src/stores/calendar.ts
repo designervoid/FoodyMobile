@@ -1,7 +1,7 @@
 import { atom } from 'nanostores';
 
-export const currentDate = atom<null | string>(null);
+export const currentDate = atom<Date>(new Date());
 
-export function setCurrentDate(value: null | string) {
+export function setCurrentDate(value: Date) {
     currentDate.set(value);
 }

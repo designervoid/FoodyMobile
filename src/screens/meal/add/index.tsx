@@ -1,12 +1,13 @@
 import { Button } from "components/ui/button";
 import { Select } from "components/ui/select";
-import { Dimensions, Platform, StyleSheet, View } from "react-native";
+import { Dimensions, Platform, StyleSheet, Text, View } from "react-native";
 import { EdgeInsets, useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAddMealItem } from "repository/add-meal-item";
 import { useStore } from '@nanostores/react';
 import { selectedValueRepository } from "stores";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MealStackParamList } from "navigators/meal";
+import Clock1 from 'assets/icons/clock-1.svg';
 
 type Props = NativeStackScreenProps<MealStackParamList, "MealAdd">;
 
@@ -19,7 +20,21 @@ export function MealAddScreen(props: Props) {
     const foodTypeId = useStore(selectedValueRepository);    
 
     return <View style={styles.container}>
-        <Select />
+        <View style={{ marginTop: 31 }}>
+            <Select />
+        </View>
+        <View style={{ display: 'flex', flexDirection: 'row', borderColor: '#D1CEE9', borderWidth: 1, paddingVertical: 20, marginTop: 31 }}>
+            <View style={{ paddingLeft: 30.39, display: 'flex', flexDirection: 'row' }}>
+                <Clock1 />
+                <Text style={{ marginHorizontal: 10 }}>Meal time</Text>
+            </View>
+            <View style={{ paddingLeft: 52 }}>
+                <Text>{date}</Text>
+            </View>
+            <View style={{ paddingLeft: 39.39 }}>
+                <Text>Go back</Text>
+            </View>
+        </View>
         <Button style={[(swrState.isMutating) && { backgroundColor: 'grey' }, styles.button]} variant="green" onPress={() => {
             if (foodTypeId && date) {
                 handleAddMealItem({ FoodTypeId: foodTypeId as 1 | 2 | 3, FoodItemIds: [], Reminder: date })
