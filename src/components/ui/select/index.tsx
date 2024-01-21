@@ -33,6 +33,9 @@ export function Select() {
     useEffect(() => {
         if (!isLoading && !error) {
             if (!currentValue) setSelectedValue('Choose the option');
+            else {
+                setSelectedValue(currentValue);
+            }
         }
     }, [isLoading, error, currentValue]);
 
