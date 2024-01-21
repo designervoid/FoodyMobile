@@ -1,8 +1,7 @@
-import React, {useRef, useCallback} from 'react';
+import React, {useRef, useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ExpandableCalendar as ExpandableCalendarBase, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 import testIDs from 'utils/testIDs';
-import {agendaItems, getMarkedDates} from 'mocks/agendaItems';
 import AgendaItem from 'mocks/AgendaItem';
 import {getTheme, themeColor, lightThemeColor} from 'mocks/theme';
 
@@ -10,8 +9,9 @@ import './locales';
 import { UpdateSources } from 'react-native-calendars/src/expandableCalendar/commons';
 import { currentDate as currentDateNS, setCurrentDate } from 'stores';
 import { useStore } from '@nanostores/react';
+import { useGetMealItems } from 'repository';
 
-const ITEMS: any[] = agendaItems;
+
 
 interface Props {
   weekView?: boolean;
@@ -19,12 +19,41 @@ interface Props {
 
 const ExpandableCalendar = (props: Props) => {
   const {weekView} = props;
-  const marked = useRef(getMarkedDates());
+
   const theme = useRef(getTheme());
   const todayBtnTheme = useRef({
     todayButtonTextColor: themeColor
   });
   const currentDate = useStore(currentDateNS)
+  const { data: mealItems } = useGetMealItems();
+
+  const agendaItems = useMemo(() => {
+    const items = mealItems?.map(item => {
+      const date = item.reminder.toString().split('T')[0];
+      const title = item.foodType.name;
+      const data = item.foodItems.map(foodItem => ({
+        hour: new Date(item.reminder).getHours() + 'am',
+        duration: '1h',
+        title: foodItem.name || 'No title',
+      }));
+      const id = item.id;
+
+      return { title: date, data, id };
+    });
+
+    items?.sort((a, b) => new Date(a.title).getTime() - new Date(b.title).getTime());
+
+    return items;
+  }, [mealItems]);
+
+  const markedDates = useMemo(() => {
+    const marked = {};
+    mealItems?.forEach(item => {
+      const date = item.reminder.toString().split('T')[0];
+      (marked as any)[date] = { marked: true };
+    });
+    return marked;
+  }, [mealItems]);
 
   const onDateChanged = useCallback((date: string, _: UpdateSources) => {
     setCurrentDate(new Date(date));
@@ -34,14 +63,9 @@ const ExpandableCalendar = (props: Props) => {
   //   console.log('ExpandableCalendarScreen onMonthChange: ', dateString);
   // }, []);
 
-  const renderItem = useCallback(({item, index, section}: any) => {
-    const isLastSection = ITEMS[ITEMS.length - 1].title === section.title;
-    const isLastItemInSection = index === section.data.length - 1;
-
-    const itemStyle = isLastSection && isLastItemInSection ? { marginBottom: 100 } : {};
-    
+  const renderItem = useCallback(({item, _, __}: any) => {
     return (
-      <View style={itemStyle}>
+      <View>
         <AgendaItem item={item}/>
       </View>
     );
@@ -61,7 +85,7 @@ const ExpandableCalendar = (props: Props) => {
       testID="CalendarProvider"
     >
       {weekView ? (
-        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={marked.current}/>
+        <WeekCalendar testID={testIDs.weekCalendar.CONTAINER} firstDay={1} markedDates={markedDates}/>
       ) : (
         <ExpandableCalendarBase
           testID={testIDs.expandableCalendar.CONTAINER}
@@ -76,14 +100,14 @@ const ExpandableCalendar = (props: Props) => {
           theme={theme.current}
           // disableAllTouchEventsForDisabledDays
           firstDay={1}
-          markedDates={marked.current}
+          markedDates={markedDates}
           style={{ marginTop: 0, }}
           // animateScroll
           // closeOnDayPress={false}
         />
       )}
       <AgendaList
-        sections={ITEMS}
+        sections={agendaItems || []}
         renderItem={renderItem}
         // scrollToNextEvent
         sectionStyle={styles.section}

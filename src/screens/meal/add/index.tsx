@@ -2,7 +2,7 @@ import { Button } from "components/ui/button";
 import { Select } from "components/ui/select";
 import { Dimensions, Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { EdgeInsets, useSafeAreaInsets } from "react-native-safe-area-context";
-import { useAddMealItem } from "repository/add-meal-item";
+import { useAddMealItem } from "repository";
 import { useStore } from '@nanostores/react';
 import { selectedValueRepository } from "stores";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
