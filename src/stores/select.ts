@@ -22,6 +22,12 @@ export function setSelectedValue(value: string) {
     selectedValue.set(value);
 }
 
+export const selectedValueRepository = atom<null | number>(null);
+
+export function setSelectedValueRepository(value: null | number) {
+    selectedValueRepository.set(value);
+}
+
 export const buttonPosition = atom<ButtonPosition>({} as ButtonPosition);
 
 export function setButtonPosition(position: ButtonPosition) {

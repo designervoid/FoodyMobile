@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useMemo } from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import { useStore} from '@nanostores/react';
-import { selectedValue, setSelectedValue, buttonPosition, setButtonPosition, modalVisible, setModalVisible  } from 'stores';
+import { selectedValue, setSelectedValue, buttonPosition, setButtonPosition, modalVisible, setModalVisible, setSelectedValueRepository  } from 'stores';
 import { Platform } from 'react-native';
 import { useGetFoodTypes } from 'repository';
 
@@ -13,7 +13,7 @@ export function Select() {
     const { data, isLoading, error } = useGetFoodTypes();
 
     const options = useMemo(() => {
-        return data?.map((item) => item.name);
+        return data?.map((item) => ({ name: item.name, id: item.id}));
     }, [data]);
 
     useEffect(() => {
@@ -67,11 +67,12 @@ export function Select() {
                                         key={index}
                                         style={styles.option}
                                         onPress={() => {
-                                            setSelectedValue(option);
+                                            setSelectedValue(option.name);
+                                            setSelectedValueRepository(option.id);
                                             setModalVisible(false);
                                         }}
                                     >
-                                        <Text style={styles.optionText}>{option}</Text>
+                                        <Text style={styles.optionText}>{option.name}</Text>
                                     </TouchableOpacity>
                                 ))}
                             </View>
