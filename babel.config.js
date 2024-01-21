@@ -6,11 +6,6 @@ module.exports = {
       {
         root: ['./src'],
         extensions: ['.js', '.ts', '.jsx', '.tsx', '.json'],
-        alias: {
-          '@hooks': './src/hooks/index',
-          '@screens': './src/screens/index',
-          '@types': './src/types/index',
-        },
       },
     ],
   ],

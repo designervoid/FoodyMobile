@@ -6,7 +6,7 @@ interface ItemProps {
   item: any;
 }
 
-const isObjectEmpty = (obj: any) => {
+export const isObjectEmpty = (obj: any) => {
   if (typeof obj !== 'object' || obj === null) return true;
 
   return Object.keys(obj).length === 0;

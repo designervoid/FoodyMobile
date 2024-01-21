@@ -3,10 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "*": ["src/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@screens/*": ["src/screens/*"],
-      "@types/*": ["src/types/*"],
+      "*": ["src/*"]
     },
     "allowJs": true,
     "types": ["jest"]

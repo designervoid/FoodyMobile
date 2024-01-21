@@ -7,6 +7,9 @@ import AgendaItem from 'mocks/AgendaItem';
 import {getTheme, themeColor, lightThemeColor} from 'mocks/theme';
 
 import './locales';
+import { UpdateSources } from 'react-native-calendars/src/expandableCalendar/commons';
+import { currentDate as currentDateNS, setCurrentDate } from 'stores';
+import { useStore } from '@nanostores/react';
 
 const ITEMS: any[] = agendaItems;
 
@@ -21,10 +24,12 @@ const ExpandableCalendar = (props: Props) => {
   const todayBtnTheme = useRef({
     todayButtonTextColor: themeColor
   });
+  const currentDate = useStore(currentDateNS)
 
-  // const onDateChanged = useCallback((date, updateSource) => {
-  //   console.log('ExpandableCalendarScreen onDateChanged: ', date, updateSource);
-  // }, []);
+  const onDateChanged = useCallback((date: string, updateSource: UpdateSources) => {
+    console.log('ExpandableCalendarScreen onDateChanged: ', `${date}T00:00:00`, updateSource);
+    setCurrentDate(date);
+  }, []);
 
   // const onMonthChange = useCallback(({dateString}) => {
   //   console.log('ExpandableCalendarScreen onMonthChange: ', dateString);
@@ -45,8 +50,8 @@ const ExpandableCalendar = (props: Props) => {
 
   return (
     <CalendarProvider
-      date={ITEMS[1]?.title}
-      // onDateChanged={onDateChanged}
+      date={currentDate!}
+      onDateChanged={onDateChanged}
       // onMonthChange={onMonthChange}
       showTodayButton
       style={{ marginTop: 30 }}

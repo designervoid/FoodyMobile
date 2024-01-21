@@ -1,5 +1,5 @@
-import isEmpty from 'lodash/isEmpty';
 import {MarkedDates} from 'react-native-calendars/src/types';
+import { isObjectEmpty } from './AgendaItem';
 
 const today = new Date().toISOString().split('T')[0];
 const fastDate = getPastDate(3);
@@ -122,7 +122,7 @@ export function getMarkedDates() {
 
   agendaItems.forEach(item => {
     // NOTE: only mark dates with data
-    if (item.data && item.data.length > 0 && !isEmpty(item.data[0])) {
+    if (item.data && item.data.length > 0 && !isObjectEmpty(item.data[0])) {
       marked[item.title] = {marked: true};
     } else {
       marked[item.title] = {disabled: true};

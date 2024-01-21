@@ -5,7 +5,7 @@ import { TransitionSpecs, CardStyleInterpolators} from '@react-navigation/stack'
 
 
 export type MealStackParamList = {
-    MealAdd: undefined;
+    MealAdd: { date: string };
     MealConfirm: undefined;
 };
 

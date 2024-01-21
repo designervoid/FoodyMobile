@@ -5,9 +5,16 @@ import { EdgeInsets, useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAddMealItem } from "repository/add-meal-item";
 import { useStore } from '@nanostores/react';
 import { selectedValueRepository } from "stores";
-import { useMemo } from "react";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { MealStackParamList } from "navigators/meal";
 
-export function MealAddScreen() {
+type Props = NativeStackScreenProps<MealStackParamList, "MealAdd">;
+
+export function MealAddScreen(props: Props) {
+    const { date } = props.route.params;
+
+    console.log(date);
+    
     const insets = useSafeAreaInsets();
     const styles = stylesDynamic(insets);
     const { swrState, handleAddMealItem } = useAddMealItem();
@@ -16,8 +23,8 @@ export function MealAddScreen() {
     return <View style={styles.container}>
         <Select />
         <Button style={[(swrState.isMutating) && { backgroundColor: 'grey' }, styles.button]} variant="green" onPress={() => {
-            if (foodTypeId) {
-                handleAddMealItem({ FoodTypeId: foodTypeId as 1 | 2 | 3, FoodItemIds: [], Reminder: '2021-01-10T10:00:00' })
+            if (foodTypeId && date) {
+                handleAddMealItem({ FoodTypeId: foodTypeId as 1 | 2 | 3, FoodItemIds: [], Reminder: date })
             }
         }} disabled={swrState.isMutating}>{swrState.isMutating ? 'Saving meal...' : swrState.data ?? 'Save'}</Button>
     </View>;
