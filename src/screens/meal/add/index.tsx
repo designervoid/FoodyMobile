@@ -12,8 +12,6 @@ type Props = NativeStackScreenProps<MealStackParamList, "MealAdd">;
 
 export function MealAddScreen(props: Props) {
     const { date } = props.route.params;
-
-    console.log(date);
     
     const insets = useSafeAreaInsets();
     const styles = stylesDynamic(insets);

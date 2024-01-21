@@ -27,7 +27,6 @@ const ExpandableCalendar = (props: Props) => {
   const currentDate = useStore(currentDateNS)
 
   const onDateChanged = useCallback((date: string, updateSource: UpdateSources) => {
-    console.log('ExpandableCalendarScreen onDateChanged: ', `${date}T00:00:00`, updateSource);
     setCurrentDate(date);
   }, []);
 
