@@ -10,7 +10,7 @@ import {
 
 type ButtonVariant = 'default' | 'green';
 
-interface ButtonProps extends TouchableOpacityProps {
+export interface ButtonProps extends TouchableOpacityProps {
   variant?: ButtonVariant;
   children: React.ReactNode;
   onPress?: () => void;

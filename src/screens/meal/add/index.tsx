@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Dimensions,
-  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -11,11 +10,10 @@ import {
 import {useStore} from '@nanostores/react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import Clock1 from 'assets/icons/clock-1.svg';
-import {Button} from 'components/ui/button';
 import {Select} from 'components/ui/select';
+import {BottomScreenButton} from 'components/wrappers/bottom-screen-button';
 import {useTypedNavigation} from 'hooks';
 import {MealStackParamList} from 'navigators/meal';
-import {EdgeInsets, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useAddMealItem} from 'repository';
 import {selectedValueRepository} from 'stores';
 
@@ -23,9 +21,6 @@ type Props = NativeStackScreenProps<MealStackParamList, 'MealAdd'>;
 
 export function MealAddScreen(props: Props) {
   const {date} = props.route.params;
-
-  const insets = useSafeAreaInsets();
-  const styles = stylesDynamic(insets);
   const {swrState, handleAddMealItem} = useAddMealItem();
   const foodTypeId = useStore(selectedValueRepository);
   const navigation = useTypedNavigation();
@@ -58,11 +53,8 @@ export function MealAddScreen(props: Props) {
           <Text>Go back</Text>
         </TouchableOpacity>
       </View>
-      <Button
-        style={[
-          swrState.isMutating && {backgroundColor: 'grey'},
-          styles.button,
-        ]}
+      <BottomScreenButton
+        style={[swrState.isMutating && {backgroundColor: 'grey'}]}
         variant="green"
         onPress={() => {
           if (foodTypeId && date) {
@@ -75,21 +67,15 @@ export function MealAddScreen(props: Props) {
         }}
         disabled={swrState.isMutating}>
         {swrState.isMutating ? 'Saving meal...' : swrState.data ?? 'Save'}
-      </Button>
+      </BottomScreenButton>
     </View>
   );
 }
 
-export const stylesDynamic = ({bottom}: EdgeInsets) =>
-  StyleSheet.create({
-    container: {
-      display: 'flex',
-      flex: 1,
-      height: Dimensions.get('window').height,
-    },
-    button: {
-      position: 'absolute',
-      bottom: Platform.OS === 'ios' ? bottom : 10,
-      width: Dimensions.get('window').width - 30 * 2,
-    },
-  });
+export const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flex: 1,
+    height: Dimensions.get('window').height,
+  },
+});
