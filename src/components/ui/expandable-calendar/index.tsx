@@ -1,17 +1,15 @@
-import React, {useRef, useCallback, useMemo} from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, {useRef, useCallback, useMemo, useId} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import {ExpandableCalendar as ExpandableCalendarBase, AgendaList, CalendarProvider, WeekCalendar} from 'react-native-calendars';
 import testIDs from 'utils/testIDs';
 import AgendaItem from 'mocks/AgendaItem';
 import {getTheme, themeColor, lightThemeColor} from 'mocks/theme';
-
 import './locales';
 import { UpdateSources } from 'react-native-calendars/src/expandableCalendar/commons';
 import { currentDate as currentDateNS, setCurrentDate } from 'stores';
 import { useStore } from '@nanostores/react';
 import { useGetMealItems } from 'repository';
-
-
+import { agendaItems as ITEMS } from 'mocks/agendaItems';
 
 interface Props {
   weekView?: boolean;
@@ -30,21 +28,34 @@ const ExpandableCalendar = (props: Props) => {
   const agendaItems = useMemo(() => {
     const items = mealItems?.map(item => {
       const date = item.reminder.toString().split('T')[0];
-      const title = item.foodType.name;
-      const data = item.foodItems.map(foodItem => ({
-        hour: new Date(item.reminder).getHours() + 'am',
-        duration: '1h',
-        title: foodItem.name || 'No title',
-      }));
+      let data;
+  
+      if (item.foodItems && item.foodItems.length > 0) {
+        data = item.foodItems.map(foodItem => ({
+          title: foodItem.name || 'No title',
+          foodType: item.foodType?.name || 'Unknown Type',
+          nutrients: `Fat: ${foodItem.fat}, Carbs: ${foodItem.carbohydrates}, Sugar: ${foodItem.sugar}, Cholesterol: ${foodItem.cholesterol}`,
+          imageUrl: foodItem.imageUrl || 'default_image_url',
+        }));
+      } else {
+        data = [{
+          title: 'No Food Items',
+          foodType: 'N/A',
+          nutrients: 'N/A',
+          imageUrl: 'default_image_url',
+        }];
+      }
+      
       const id = item.id;
-
+  
       return { title: date, data, id };
     });
-
+  
     items?.sort((a, b) => new Date(a.title).getTime() - new Date(b.title).getTime());
-
+  
     return items;
   }, [mealItems]);
+  
 
   const markedDates = useMemo(() => {
     const marked = {};
@@ -65,9 +76,7 @@ const ExpandableCalendar = (props: Props) => {
 
   const renderItem = useCallback(({item, _, __}: any) => {
     return (
-      <View>
-        <AgendaItem item={item}/>
-      </View>
+      <AgendaItem item={item} />
     );
   }, []);
 

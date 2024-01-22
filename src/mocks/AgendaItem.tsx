@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useId} from 'react';
 import {StyleSheet, Alert, View, Text, TouchableOpacity, Button} from 'react-native';
 import testIDs from 'utils/testIDs';
 
@@ -13,33 +13,18 @@ export const isObjectEmpty = (obj: any) => {
 };
 
 const AgendaItem = (props: ItemProps) => {
+  const id = useId();
   const {item} = props;
-
-  const buttonPressed = useCallback(() => {
-    Alert.alert('Show me more');
-  }, []);
 
   const itemPressed = useCallback(() => {
     Alert.alert(item.title);
   }, []);
 
-  if (isObjectEmpty(item)) {
-    return (
-      <View style={styles.emptyItem}>
-        <Text style={styles.emptyItemText}>No Events Planned Today</Text>
-      </View>
-    );
-  }
-
   return (
-    <TouchableOpacity onPress={itemPressed} style={styles.item} testID={testIDs.agenda.ITEM}>
+    <TouchableOpacity onPress={itemPressed} style={styles.item} testID={testIDs.agenda.ITEM} key={id}>
       <View>
-        <Text style={styles.itemHourText}>{item.hour}</Text>
-        <Text style={styles.itemDurationText}>{item.duration}</Text>
-      </View>
-      <Text style={styles.itemTitleText}>{item.title}</Text>
-      <View style={styles.itemButtonContainer}>
-        <Button color={'grey'} title={'Info'} onPress={buttonPressed}/>
+        <Text style={styles.itemTitleText}>{item.title}</Text>
+        <Text style={styles.itemTitleText}>{item.nutrients}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -55,6 +40,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'lightgrey',
     flexDirection: 'row',
+    display: 'flex'
   },
   itemHourText: {
     color: 'black'
