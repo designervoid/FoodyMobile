@@ -9,7 +9,6 @@ import { UpdateSources } from 'react-native-calendars/src/expandableCalendar/com
 import { currentDate as currentDateNS, setCurrentDate } from 'stores';
 import { useStore } from '@nanostores/react';
 import { useGetMealItems } from 'repository';
-import { agendaItems as ITEMS } from 'mocks/agendaItems';
 
 interface Props {
   weekView?: boolean;
