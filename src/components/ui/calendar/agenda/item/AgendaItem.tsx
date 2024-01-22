@@ -32,7 +32,6 @@ const AgendaItem = (props: ItemProps) => {
 
 export default React.memo(AgendaItem);
 
-
 const styles = StyleSheet.create({
   item: {
     padding: 20,
