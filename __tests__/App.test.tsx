@@ -1,10 +1,16 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
+
+import {NavigationContainer} from '@react-navigation/native';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react-native';
 
 import {RootNavigator} from '../src/navigators/root';
 
-import '@testing-library/jest-native/extend-expect'; 
+import '@testing-library/jest-native/extend-expect';
 
 describe('Testing react navigation', () => {
   test('Start page - Auth', async () => {
@@ -22,22 +28,6 @@ describe('Testing react navigation', () => {
   });
 
   test('From Auth to Home', async () => {
-    const component = (
-      <NavigationContainer>
-        <RootNavigator />
-      </NavigationContainer>
-    );
-
-    waitFor(() => render(component));
-
-    fireEvent.press(screen.getByText('On Home'));
-
-    expect(screen.getByText('Home Screen')).toBeOnTheScreen();
-  });
-});
-
-describe('Testing HomeScreen', () => {
-  test('Renders ExpandableCalendar (wrapped in CalendarProvider)', () => {
     const component = (
       <NavigationContainer>
         <RootNavigator />

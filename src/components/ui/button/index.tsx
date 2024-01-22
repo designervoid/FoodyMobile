@@ -1,5 +1,12 @@
-import React, { useMemo } from 'react';
-import { Text, TouchableOpacity, StyleSheet, StyleProp, TextStyle, TouchableOpacityProps } from 'react-native';
+import React, {useMemo} from 'react';
+import {
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  TouchableOpacityProps,
+} from 'react-native';
 
 type ButtonVariant = 'default' | 'green';
 
@@ -33,11 +40,21 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Button: React.FC<ButtonProps> = ({ variant = 'default', children, onPress, style, textStyle, ...props }) => {
+export const Button: React.FC<ButtonProps> = ({
+  variant = 'default',
+  children,
+  onPress,
+  style,
+  textStyle,
+  ...props
+}) => {
   const buttonStyle = useMemo(() => {
     return [styles.button, variant === 'green' && styles.green, style];
-  }, [styles.button, variant, styles.green, style]);
-  const buttonTextStyles = useMemo(() => [styles.buttonText, textStyle], [textStyle]);
+  }, [variant, style]);
+  const buttonTextStyles = useMemo(
+    () => [styles.buttonText, textStyle],
+    [textStyle],
+  );
 
   return (
     <TouchableOpacity style={buttonStyle} onPress={onPress} {...props}>

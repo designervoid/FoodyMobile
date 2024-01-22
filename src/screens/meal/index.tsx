@@ -1,2 +1,2 @@
 export * from './add';
-export * from './confirm';
+export * from './edit';

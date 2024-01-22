@@ -1,11 +1,7 @@
 import React from 'react';
-import {
-  Button,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import { useTypedNavigation } from 'hooks/useTypedNavigation';
+import {Button, StyleSheet, Text, View} from 'react-native';
+
+import {useTypedNavigation} from 'hooks/useTypedNavigation';
 
 export function AuthScreen() {
   const navigation = useTypedNavigation();
@@ -13,7 +9,12 @@ export function AuthScreen() {
   return (
     <View style={styles.container}>
       <Text>Auth Screen</Text>
-      <Button title="On Home" onPress={() => { navigation.navigate('Home') }}></Button>
+      <Button
+        title="On Home"
+        onPress={() => {
+          navigation.navigate('Home');
+        }}
+      />
     </View>
   );
 }
