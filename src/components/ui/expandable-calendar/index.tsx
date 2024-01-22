@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useRef} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 
 import {useStore} from '@nanostores/react';
 import AgendaItem from 'components/ui/calendar/agenda/item/AgendaItem';
@@ -16,6 +16,7 @@ import {
 } from 'react-native-calendars';
 import {UpdateSources} from 'react-native-calendars/src/expandableCalendar/commons';
 import {useGetMealItems} from 'repository';
+import {FoodItems} from 'repository/get-food-items/interfaces';
 import {currentDate as currentDateNS, setCurrentDate} from 'stores';
 import testIDs from 'utils/testIDs';
 import './locales';
@@ -34,22 +35,50 @@ const ExpandableCalendar = (props: Props) => {
   const currentDate = useStore(currentDateNS);
   const {data: mealItems} = useGetMealItems();
 
+  const calculateFoodFat = useCallback((foodItems: FoodItems) => {
+    return foodItems.reduce((prev, curr) => prev + curr.fat, 0).toFixed(2);
+  }, []);
+
+  const calculateFoodCarbs = useCallback((foodItems: FoodItems) => {
+    return foodItems.reduce((prev, curr) => prev + curr.carbohydrates, 0).toFixed(2);
+  }, []);
+
+  const calculateFoodSugar = useCallback((foodItems: FoodItems) => {
+    return foodItems.reduce((prev, curr) => prev + curr.sugar, 0).toFixed(2);
+  }, []);
+
+  const calculateFoodCholesterol = useCallback((foodItems: FoodItems) => {
+    return foodItems.reduce((prev, curr) => prev + curr.cholesterol, 0).toFixed(2);
+  }, []);
+
   const agendaItems = useMemo(() => {
     const items = mealItems?.map(item => {
       const date = item.reminder.toString().split('T')[0];
       let data;
       if (item.foodItems && item.foodItems.length > 0) {
         data = item.foodItems.map(foodItem => ({
-          title: foodItem.name || 'No title',
+          title: (
+            <View>
+              <View>
+                <Text>{item.foodType.name}</Text>
+              </View>
+            </View>
+          ),
           foodType: item.foodType?.name || 'Unknown Type',
-          nutrients: `Fat: ${foodItem.fat}, Carbs: ${foodItem.carbohydrates}, Sugar: ${foodItem.sugar}, Cholesterol: ${foodItem.cholesterol}`,
+          nutrients: `Fat: ${calculateFoodFat(
+            item.foodItems,
+          )}, Carbs: ${calculateFoodCarbs(
+            item.foodItems,
+          )}, Sugar: ${calculateFoodSugar(
+            item.foodItems,
+          )}, Cholesterol: ${calculateFoodCholesterol(item.foodItems)}`,
           imageUrl: foodItem.imageUrl || '',
           id: item.id,
         }));
       } else {
         data = [
           {
-            title: 'No Food Items',
+            title: item.foodType.name,
             foodType: 'N/A',
             nutrients: 'N/A',
             imageUrl: '',
@@ -64,7 +93,13 @@ const ExpandableCalendar = (props: Props) => {
       (a, b) => new Date(a.title).getTime() - new Date(b.title).getTime(),
     );
     return items;
-  }, [mealItems]);
+  }, [
+    mealItems,
+    calculateFoodFat,
+    calculateFoodCarbs,
+    calculateFoodSugar,
+    calculateFoodCholesterol,
+  ]);
 
   const markedDates = useMemo(() => {
     const marked = {};

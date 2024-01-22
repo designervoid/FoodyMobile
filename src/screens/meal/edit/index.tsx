@@ -6,12 +6,15 @@ import {MealStackParamList} from 'navigators/meal';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import {useGetCalculateRating} from 'repository/get-calculate-rating';
 import {useGetFoodItems} from 'repository/get-food-items';
-import {useGetMealItem} from 'repository/get-meal-item';
+import { useEditMealItem } from 'repository/edit-meal-item';
+import { BottomScreenButton } from 'components/wrappers/bottom-screen-button';
 
 type Props = NativeStackScreenProps<MealStackParamList, 'MealEdit'>;
 
 function Rating({id}: {id: number | string}) {
   const swrState = useGetCalculateRating(id.toString());
+
+  console.log(swrState.error);
 
   if (swrState.isLoading) {
     return <Text>Loading...</Text>;
@@ -22,8 +25,8 @@ function Rating({id}: {id: number | string}) {
 
 export function MealEditScreen(props: Props) {
   const {id} = props.route.params;
-  const swrState0 = useGetMealItem(id);
   const swrState1 = useGetFoodItems();
+  const {swrState: swrState2, handleAddMealItem} = useEditMealItem(id);
 
   return (
     <>
@@ -45,7 +48,7 @@ export function MealEditScreen(props: Props) {
                 alignItems: 'center',
               }}>
               <BouncyCheckbox
-                size={25}
+                size={30}
                 fillColor="#3AC2C3"
                 unfillColor="#FFFFFF"
                 iconStyle={{borderColor: 'green', borderRadius: 5}}
@@ -54,16 +57,29 @@ export function MealEditScreen(props: Props) {
                   borderRadius: 5,
                   borderColor: '#3AC2C3',
                 }}
-                isChecked={swrState0.data?.foodItemIds.includes(
-                  Number(q.item.id),
-                )}
               />
-              <Rating id={q.item.id} />
-              <Text style={{marginLeft: 5}}>{JSON.stringify(q.item.id)}</Text>
+              <View style={{}}>
+                <Rating id={q.item.id} />
+                <Text style={{marginLeft: 5}}>Id: {q.item.id}</Text>
+                <Text style={{marginLeft: 5}}>{`Fat: ${q.item.fat}`}</Text>
+                <Text
+                  style={{
+                    marginLeft: 5,
+                  }}>{`Carbs: ${q.item.carbohydrates}`}</Text>
+                <Text style={{marginLeft: 5}}>{`Sugar: ${q.item.sugar}`}</Text>
+                <Text
+                  style={{
+                    marginLeft: 5,
+                  }}>{`Cholesterol: ${q.item.cholesterol}`}</Text>
+              </View>
             </View>
           );
         }}
       />
+      <BottomScreenButton style={[swrState2.isMutating && {backgroundColor: 'grey'}]}
+        variant="green" onPress={() => {
+          // handleAddMealItem({ FoodItemIds: finalIds })
+        }}>Save</BottomScreenButton>
     </>
   );
 }

@@ -7,6 +7,7 @@ export interface FoodItem {
   carbohydrates: number;
   sugar: number;
   cholesterol: number;
+  isActive: boolean;
 }
 
 export type FoodItems = FoodItem[];
