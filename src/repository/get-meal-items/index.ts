@@ -1,19 +1,18 @@
 import Config from 'react-native-config';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 
 import {MealItems} from './interfaces';
-import { useEffect } from 'react';
 
 export function useGetMealItems() {
-  // <response, error, key> generic
-  const swrState = useSWR<MealItems, any, `${string}/get-meal-items`>(
-    `${Config.BASE_URL}/get-meal-items`,
-    endpoint => fetch(endpoint).then(res => res.json()),
-  );
+  const key = `${Config.BASE_URL}/get-meal-items`;
 
-  useEffect(() => {
-    swrState.mutate();
-  }, []);
+  const fetcher = (endpoint: string) => fetch(endpoint).then(res => res.json());
+  const swrState = useSWR<MealItems, any>(key, fetcher);
 
-  return swrState;
+  // Функция для инициирования мутации извне
+  const refreshData = () => {
+    mutate(key);
+  };
+
+  return {...swrState, refreshData};
 }

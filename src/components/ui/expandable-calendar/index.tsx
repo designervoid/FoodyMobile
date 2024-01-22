@@ -1,8 +1,8 @@
-import React, {useCallback, useMemo, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
 import {useStore} from '@nanostores/react';
-import AgendaItem from 'components/ui/calendar/agenda/item/AgendaItem';
+import {AgendaItem} from 'components/ui/calendar/agenda/item/AgendaItem';
 import {
   getTheme,
   lightThemeColor,
@@ -33,7 +33,7 @@ const ExpandableCalendar = (props: Props) => {
     todayButtonTextColor: themeColor,
   });
   const currentDate = useStore(currentDateNS);
-  const {data: mealItems} = useGetMealItems();
+  const {data: mealItems, mutate} = useGetMealItems();
 
   const calculateFoodFat = useCallback((foodItems: FoodItems) => {
     return foodItems.reduce((prev, curr) => prev + curr.fat, 0).toFixed(2);
@@ -56,7 +56,7 @@ const ExpandableCalendar = (props: Props) => {
       const date = item.reminder.toString().split('T')[0];
       let data;
       if (item.foodItems && item.foodItems.length > 0) {
-        data = item.foodItems.map(foodItem => ({
+        data = [{
           title: (
             <View>
               <View>
@@ -73,9 +73,9 @@ const ExpandableCalendar = (props: Props) => {
           )}, Sugar: ${calculateFoodSugar(
             item.foodItems,
           )}, Cholesterol: ${calculateFoodCholesterol(item.foodItems)}`,
-          imageUrl: foodItem.imageUrl || '',
+          imageUrl: '',
           id: item.id,
-        }));
+        }];
       } else {
         data = [
           {
@@ -124,6 +124,10 @@ const ExpandableCalendar = (props: Props) => {
 
   const renderItem = useCallback(({item, _, __}: any) => {
     return <AgendaItem item={item} />;
+  }, []);
+
+  useEffect(() => {
+    mutate();
   }, []);
 
   return (

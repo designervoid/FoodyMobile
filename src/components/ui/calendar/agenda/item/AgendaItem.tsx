@@ -16,7 +16,7 @@ export const isObjectEmpty = (obj: any) => {
   return Object.keys(obj).length === 0;
 };
 
-const AgendaItem = (props: ItemProps) => {
+export const AgendaItem = (props: ItemProps) => {
   const navigation = useTypedNavigation();
   const id = useId();
   const {item} = props;
@@ -38,8 +38,6 @@ const AgendaItem = (props: ItemProps) => {
     </TouchableOpacity>
   );
 };
-
-export default React.memo(AgendaItem);
 
 const styles = StyleSheet.create({
   item: {

@@ -39,29 +39,23 @@ export function useEditMealItem(id: string) {
     any
   >(`${Config.BASE_URL}/edit-meal-item/${id}`, editMealItem);
   const swrState1 = useGetMealItem(id);
-  const swrState0 = useGetMealItem(id);
   const swrState2 = useGetFoodItems();
+  const swrState3 = useGetMealItems();
 
   const {trigger} = swrState;
 
   const handleAddMealItem = async (mealItem: MealItem) => {
     try {
       if (swrState1.data) {
-        const r = await trigger({...mealItem, FoodTypeId: swrState1.data.foodTypeId as 1 | 2 | 3, Reminder: swrState1.data.reminder as unknown as string });
-        console.log(r);
-        navigation.navigate('Home');
+        await trigger({...mealItem, FoodTypeId: swrState1.data.foodTypeId as 1 | 2 | 3, Reminder: swrState1.data.reminder as unknown as string });
         swrState.reset();
         swrState1.mutate();
-        swrState0.mutate();
         swrState2.mutate();
+        swrState3.refreshData();
+        navigation.navigate('Home');
       };
     } catch (e) {
       console.error(e);
-    } finally {
-      swrState.reset();
-        swrState1.mutate();
-        swrState0.mutate();
-        swrState2.mutate();
     }
   };
 

@@ -44,8 +44,8 @@ export function useAddMealItem() {
   useEffect(() => {
     if (!swrState.isMutating && swrState.data) {
       setSelectedValueRepository(null);
+      swrState0.refreshData();
       navigation.navigate('Home');
-      swrState0.mutate();
     }
   }, [swrState.isMutating, swrState.data, swrState0, navigation]);
 
