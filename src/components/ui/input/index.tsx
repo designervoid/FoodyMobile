@@ -3,6 +3,6 @@ import {TextInput, TextInputProps} from 'react-native';
 
 type InputProps = {children: ReactNode} & TextInputProps;
 
-export function Input({children, ...props}: InputProps) {
+export function Input({_, ...props}: InputProps) {
   return <TextInput {...props} />;
 }

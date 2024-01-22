@@ -40,6 +40,8 @@ export const provideOptions = (
 };
 
 export function RootNavigator() {
+  const navigation = useTypedNavigation();
+
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -61,8 +63,6 @@ export function RootNavigator() {
         component={MealNavigator}
         {...provideOptions({
           headerLeft: () => {
-            const navigation = useTypedNavigation();
-
             return (
               <TouchableOpacity
                 onPress={() => {
