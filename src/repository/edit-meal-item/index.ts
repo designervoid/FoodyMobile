@@ -5,6 +5,7 @@ import Config from 'react-native-config';
 import {useGetMealItems} from 'repository';
 import useSWRMutation from 'swr/mutation';
 import { useGetMealItem } from 'repository/get-meal-item';
+import { useGetFoodItems } from 'repository/get-food-items';
 
 type MealItem = {
   FoodItemIds?: number[];
@@ -37,12 +38,19 @@ export function useEditMealItem(id: string) {
     any
   >(`${Config.BASE_URL}/edit-meal-item/${id}`, editMealItem);
   const swrState1 = useGetMealItem(id);
+  const swrState0 = useGetMealItem(id);
+  const swrState2 = useGetFoodItems();
 
   const {trigger} = swrState;
 
   const handleAddMealItem = async (mealItem: MealItem) => {
     try {
-      if (swrState1.data) await trigger({...mealItem, FoodTypeId: swrState1.data.foodTypeId as 1 | 2 | 3, Reminder: swrState1.data.reminder as unknown as string });
+      if (swrState1.data) {
+        await trigger({...mealItem, FoodTypeId: swrState1.data.foodTypeId as 1 | 2 | 3, Reminder: swrState1.data.reminder as unknown as string })
+        await swrState0.mutate();
+        await swrState2.mutate();
+        swrState.reset();
+      };
     } catch (e) {
       console.error(e);
     }

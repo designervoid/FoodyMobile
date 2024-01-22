@@ -2,6 +2,7 @@ import Config from 'react-native-config';
 import useSWR from 'swr';
 
 import {FoodItems} from './interfaces';
+import { useEffect } from 'react';
 
 export function useGetFoodItems() {
   // <response, error, key> generic
@@ -9,6 +10,10 @@ export function useGetFoodItems() {
     `${Config.BASE_URL}/get-food-items`,
     endpoint => fetch(endpoint).then(res => res.json()),
   );
+
+  useEffect(() => {
+    swrState.mutate();
+  }, []);
 
   return swrState;
 }
