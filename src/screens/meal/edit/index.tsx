@@ -27,6 +27,7 @@ function Rating({id}: {id: number | string}) {
 const ids = atom<number[]>([]);
 
 function setIds(payload: number[]) {
+  if (payload.length === 0) ids.set([]);
   ids.set([...ids.get(), ...payload]);
 }
 
@@ -36,6 +37,7 @@ export function MealEditScreen(props: Props) {
   const swrState1 = useGetFoodItems();
   const {swrState: swrState2, handleAddMealItem} = useEditMealItem(id);
   const ids0 = useStore(ids);
+
 
   useEffect(() => {
     return () => {

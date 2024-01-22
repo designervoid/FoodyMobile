@@ -30,6 +30,7 @@ async function editMealItem(url: string, {arg}: {arg: MealItem}) {
 }
 
 export function useEditMealItem(id: string) {
+  const navigation = useTypedNavigation();
   const swrState = useSWRMutation<
     string,
     any,
@@ -46,13 +47,21 @@ export function useEditMealItem(id: string) {
   const handleAddMealItem = async (mealItem: MealItem) => {
     try {
       if (swrState1.data) {
-        await trigger({...mealItem, FoodTypeId: swrState1.data.foodTypeId as 1 | 2 | 3, Reminder: swrState1.data.reminder as unknown as string })
-        await swrState0.mutate();
-        await swrState2.mutate();
+        const r = await trigger({...mealItem, FoodTypeId: swrState1.data.foodTypeId as 1 | 2 | 3, Reminder: swrState1.data.reminder as unknown as string });
+        console.log(r);
+        navigation.navigate('Home');
         swrState.reset();
+        swrState1.mutate();
+        swrState0.mutate();
+        swrState2.mutate();
       };
     } catch (e) {
       console.error(e);
+    } finally {
+      swrState.reset();
+        swrState1.mutate();
+        swrState0.mutate();
+        swrState2.mutate();
     }
   };
 

@@ -61,6 +61,7 @@ const ExpandableCalendar = (props: Props) => {
             <View>
               <View>
                 <Text>{item.foodType.name}</Text>
+                <Text>{item.id}</Text>
               </View>
             </View>
           ),
@@ -78,7 +79,14 @@ const ExpandableCalendar = (props: Props) => {
       } else {
         data = [
           {
-            title: item.foodType.name,
+            title: (
+              <View>
+                <View>
+                  <Text>{item.foodType.name}</Text>
+                  <Text>{item.id}</Text>
+                </View>
+              </View>
+            ),
             foodType: 'N/A',
             nutrients: 'N/A',
             imageUrl: '',
@@ -90,7 +98,7 @@ const ExpandableCalendar = (props: Props) => {
       return {title: date, data, id};
     });
     items?.sort(
-      (a, b) => new Date(a.title).getTime() - new Date(b.title).getTime(),
+      (a, b) => a.id - b.id,
     );
     return items;
   }, [
