@@ -62,7 +62,7 @@ export function Select() {
                             <View 
                                 style={[
                                     styles.modalView,
-                                    { top: Platform.OS === 'ios' ? currentPosition.y + currentPosition.height + 70 + 5  : currentPosition.y + (currentPosition.y / 4) + 5 }
+                                    { top: Platform.OS === 'ios' ? currentPosition.y + currentPosition.height + 70 + 5  : 120 }
                                 ]}
                             >
                                 {options?.map((option, index) => (
