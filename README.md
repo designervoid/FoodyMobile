@@ -2,6 +2,14 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 # Getting Started
 
+## Step 0:
+
+Create `.env` with content:
+
+```
+BASE_URL=https://2dxz44zd-5069.euw.devtunnels.ms
+```
+
 >**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Step 1: Start the Metro Server
