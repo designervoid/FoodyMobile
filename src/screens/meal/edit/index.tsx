@@ -1,13 +1,5 @@
-import React, { ReactNode, useEffect, useId } from 'react';
-import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {
-  Canvas,
-  Rect,
-  LinearGradient as LinearGradientBase,
-  Skia,
-  Shader,
-  vec
-} from "@shopify/react-native-skia";
+import React, { useEffect } from 'react';
+import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {MealStackParamList} from 'navigators/meal';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
@@ -40,49 +32,39 @@ function setIds(payload: number[]) {
   ids.set([...ids.get(), ...payload]);
 }
 
-export function MealEditScreen(props: Props) {
-  const {id} = props.route.params;
-  const {swrState: swrState0, refreshData} = useGetMealItem(id);
-  const swrState1 = useGetFoodItems();
-  const {swrState: swrState2, handleAddMealItem} = useEditMealItem(id);
-  const ids0 = useStore(ids);
-
-  const renderFoodItem = ({ item }: any) => {
-    return <View style={styles.foodItemContainer} key={item.id}>
-      <Text style={styles.foodItemName}>{item.name}</Text>
-      <Text style={styles.foodItemDetail}>Type: {item.foodType}</Text>
-      <Text style={styles.foodItemDetail}>Fat: {item.fat}</Text>
-      <Text style={styles.foodItemDetail}>Carbs: {item.carbohydrates}</Text>
-      <Text style={styles.foodItemDetail}>Sugar: {item.sugar}</Text>
-      <Text style={styles.foodItemDetail}>Cholesterol: {item.cholesterol}</Text>
+const renderFoodItem = ({ item }: { item: FoodItem }) => {
+  return <View style={styles.foodItemContainer} key={item.id}>
+    <View style={styles.imageWrapperFoodItem}>
+      {item.imageUrl && <Image src={item.imageUrl} style={styles.image} />}
     </View>
-  };
-  
-  const renderFoodItemCheckbox = (q: FoodItem) => {
-    return (
-      <View
-        key={q.id}
-        style={{
-          paddingHorizontal: 20,
-          paddingVertical: 13,
-          borderRadius: 10,
-          backgroundColor: '#fff',
-          marginTop: 17,
-          marginHorizontal: 20,
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}>
-        <BouncyCheckbox
+    <View style={styles.foodItemInfo}>
+      <Text style={styles.foodItemName}>{item.name}</Text>
+      <Text>Id: {item.id}</Text>
+      <Rating id={item.id} />
+    </View>
+  </View>
+};
+
+const renderFoodItemCheckbox = (q: FoodItem) => {
+  return (
+    <View
+      key={q.id}
+      style={styles.foodItemContainer}>
+        <View>
+        {q.imageUrl && <Image src={q.imageUrl} style={styles.image} />}
+        </View>
+      <View style={styles.foodItemInfo}>
+        <Text style={styles.foodItemName}>{q.name}</Text>
+        <Text>Id: {q.id}</Text>
+        <Rating id={q.id} />
+      </View>
+     <View style={styles.bouncyCheckboxWrapper}>
+      <BouncyCheckbox
           size={30}
           fillColor="#3AC2C3"
           unfillColor="#FFFFFF"
-          iconStyle={{borderColor: 'green', borderRadius: 5}}
-          innerIconStyle={{
-            borderWidth: 2,
-            borderRadius: 5,
-            borderColor: '#3AC2C3',
-          }}
+          iconStyle={styles.iconStyle}
+          innerIconStyle={styles.innerIconStyle}
           onPress={(isChecked) => {
             if (isChecked) {
               setIds([q.id]);
@@ -91,23 +73,17 @@ export function MealEditScreen(props: Props) {
             }
           }}
         />
-        <View style={{}}>
-          <Rating id={q.id} />
-          <Text style={{marginLeft: 5}}>Id: {q.id}</Text>
-          <Text style={{marginLeft: 5}}>{`Fat: ${q.fat}`}</Text>
-          <Text
-            style={{
-              marginLeft: 5,
-            }}>{`Carbs: ${q.carbohydrates}`}</Text>
-          <Text style={{marginLeft: 5}}>{`Sugar: ${q.sugar}`}</Text>
-          <Text
-            style={{
-              marginLeft: 5,
-            }}>{`Cholesterol: ${q.cholesterol}`}</Text>
-        </View>
-      </View>
-    )
-  }
+     </View>
+    </View>
+  )
+}
+
+export function MealEditScreen(props: Props) {
+  const {id} = props.route.params;
+  const {swrState: swrState0, refreshData} = useGetMealItem(id);
+  const swrState1 = useGetFoodItems();
+  const {swrState: swrState2, handleAddMealItem} = useEditMealItem(id);
+  const ids0 = useStore(ids);
 
   useEffect(() => {
     refreshData();
@@ -119,9 +95,11 @@ export function MealEditScreen(props: Props) {
   return (
     <View>
       <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
+        <Text style={[styles.h1, styles.px20, styles.py20]}>My foods</Text>
         <View>
         {swrState0.data?.foodItems.map(item => renderFoodItem({item}))}
         </View>
+        <Text style={[styles.h1, styles.px20, styles.py20]}>Available foods</Text>
         <View>
           {swrState1.data?.map((item) => (
             renderFoodItemCheckbox(item)
@@ -140,11 +118,12 @@ const styles = StyleSheet.create({
   foodItemContainer: {
     backgroundColor: '#fff',
     borderRadius: 10,
-    padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
+    height: 102,
+    alignItems: 'center'
   },
   foodItemName: {
     fontSize: 18,
@@ -153,5 +132,29 @@ const styles = StyleSheet.create({
   foodItemDetail: {
     fontSize: 14,
     color: 'grey',
+  },
+  image: {
+    width: 102,
+    height: 102,
+    padding: 20,
+  },
+  imageWrapperFoodItem: { width: 103, display: 'flex', justifyContent: 'center' },
+  iconStyle: {borderColor: 'green', borderRadius: 5},
+  innerIconStyle: {
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: '#3AC2C3',
+  },
+  bouncyCheckboxWrapper: { flex: 1, justifyContent: 'center', alignItems: 'flex-end', paddingBottom: 10 },
+  foodItemInfo: { marginVertical: 0, paddingBottom: 10 },
+  h1: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  px20: {
+    paddingHorizontal: 20,
+  },
+  py20: {
+    paddingVertical: 20,
   },
 });
