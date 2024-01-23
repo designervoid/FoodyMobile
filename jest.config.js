@@ -5,4 +5,7 @@ module.exports = {
       '<rootDir>/jest/imageMock.js',
   },
   setupFiles: ['<rootDir>/jest/setup.js'],
+  "transformIgnorePatterns": [
+    "node_modules/(?!(react-native|react-native.*|@react-native.*|@?react-navigation.*|@shopify/react-native-skia)/)"
+  ]
 };

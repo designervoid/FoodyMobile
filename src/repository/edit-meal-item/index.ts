@@ -38,7 +38,7 @@ export function useEditMealItem(id: string) {
     MealItem,
     any
   >(`${Config.BASE_URL}/edit-meal-item/${id}`, editMealItem);
-  const swrState1 = useGetMealItem(id);
+  const {swrState: swrState1} = useGetMealItem(id);
   const swrState2 = useGetFoodItems();
   const swrState3 = useGetMealItems();
 

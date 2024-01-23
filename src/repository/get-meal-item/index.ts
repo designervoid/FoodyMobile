@@ -1,19 +1,25 @@
 import Config from 'react-native-config';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 
 import {MealItem} from './interfaces';
 import { useEffect } from 'react';
 
 export function useGetMealItem(id: string) {
-  // <response, error, key> generic
+  const key = `${Config.BASE_URL}/get-meal-item/${id}`;
+
+  const fetcher = (endpoint: string) => fetch(endpoint, { headers: { 'Content-Type': 'application/json' }}).then(res => res.json());
   const swrState = useSWR<MealItem, any, `${string}/get-meal-item/${string}`>(
-    `${Config.BASE_URL}/get-meal-item/${id}`,
-    endpoint => fetch(endpoint).then(res => res.json()),
+    key as `${string}/get-meal-item/${string}`,
+    fetcher,
   );
+
+  const refreshData = () => {
+    mutate(key);
+  };
 
   useEffect(() => {
     swrState.mutate();
   }, []);
 
-  return swrState;
+  return {swrState, refreshData};
 }

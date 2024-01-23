@@ -12,7 +12,7 @@ export function useGetCalculateRating(id: string) {
     any,
     `${string}/calculate-rating/${string}`
   >(`${Config.BASE_URL}/calculate-rating/${id}`, endpoint =>
-    fetch(endpoint).then(res => res.json()),
+    fetch(endpoint, { headers: { 'Content-Type': 'application/json' }}).then(res => res.json()),
   );
   const swrState1 = useGetFoodItems();
 

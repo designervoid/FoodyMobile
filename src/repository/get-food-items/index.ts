@@ -8,7 +8,7 @@ export function useGetFoodItems() {
   // <response, error, key> generic
   const swrState = useSWR<FoodItems, any, `${string}/get-food-items`>(
     `${Config.BASE_URL}/get-food-items`,
-    endpoint => fetch(endpoint).then(res => res.json()),
+    endpoint => fetch(endpoint, { headers: { 'Content-Type': 'application/json' }}).then(res => res.json()),
   );
 
   useEffect(() => {

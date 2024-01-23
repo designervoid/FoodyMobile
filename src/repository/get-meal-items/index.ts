@@ -6,10 +6,9 @@ import {MealItems} from './interfaces';
 export function useGetMealItems() {
   const key = `${Config.BASE_URL}/get-meal-items`;
 
-  const fetcher = (endpoint: string) => fetch(endpoint).then(res => res.json());
+  const fetcher = (endpoint: string) => fetch(endpoint, { headers: { 'Content-Type': 'application/json' }}).then(res => res.json());
   const swrState = useSWR<MealItems, any>(key, fetcher);
 
-  // Функция для инициирования мутации извне
   const refreshData = () => {
     mutate(key);
   };

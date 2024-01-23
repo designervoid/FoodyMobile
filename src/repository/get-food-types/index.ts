@@ -7,7 +7,7 @@ export function useGetFoodTypes() {
   // <response, error, key> generic
   const swrState = useSWR<FoodTypes, any, `${string}/get-food-types`>(
     `${Config.BASE_URL}/get-food-types`,
-    endpoint => fetch(endpoint).then(res => res.json()),
+    endpoint => fetch(endpoint, { headers: { 'Content-Type': 'application/json' }}).then(res => res.json()),
   );
 
   return swrState;
