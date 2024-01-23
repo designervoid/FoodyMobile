@@ -155,6 +155,7 @@ const ExpandableCalendar = (props: Props) => {
         />
       )}
       <AgendaList
+        contentContainerStyle={{ paddingBottom: 100 }}
         sections={agendaItems || []}
         renderItem={renderItem}
         sectionStyle={styles.section}
