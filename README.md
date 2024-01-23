@@ -10,6 +10,9 @@ Create `.env` with content:
 BASE_URL=https://2dxz44zd-5069.euw.devtunnels.ms
 ```
 
+`https://2dxz44zd-5069.euw.devtunnels.ms/` is URL that used in APK build.
+If that URL is offline - pls contact `dsgnrvd@gmail.com`, I will up VSCode Port, or you should build backend locally and provide with VSCode Port, Ngrok, Localtunnel tool.
+
 >**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Step 1: Start the Metro Server
