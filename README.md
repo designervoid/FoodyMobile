@@ -93,3 +93,6 @@ To learn more about React Native, take a look at the following resources:
 3. More Unit, Integrational, E2E
 4. Husky
 5. CI/CD
+6. Theme
+7. Internationalization
+8. Typography Components
