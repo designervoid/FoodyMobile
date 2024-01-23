@@ -1,5 +1,5 @@
-import { FoodItem } from "repository/get-food-items/interfaces";
-import { FoodType } from "repository/get-food-types/interfaces";
+import {FoodItem} from 'repository/get-food-items/interfaces';
+import {FoodType} from 'repository/get-food-types/interfaces';
 
 export interface MealItem {
   id: number;

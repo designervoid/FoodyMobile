@@ -3,9 +3,9 @@ import {useEffect} from 'react';
 import {useTypedNavigation} from 'hooks';
 import Config from 'react-native-config';
 import {useGetMealItems} from 'repository';
+import {useGetFoodItems} from 'repository/get-food-items';
+import {useGetMealItem} from 'repository/get-meal-item';
 import useSWRMutation from 'swr/mutation';
-import { useGetMealItem } from 'repository/get-meal-item';
-import { useGetFoodItems } from 'repository/get-food-items';
 
 type MealItem = {
   FoodItemIds?: number[];
@@ -47,13 +47,17 @@ export function useEditMealItem(id: string) {
   const handleAddMealItem = async (mealItem: MealItem) => {
     try {
       if (swrState1.data) {
-        await trigger({...mealItem, FoodTypeId: swrState1.data.foodTypeId as 1 | 2 | 3, Reminder: swrState1.data.reminder as unknown as string });
+        await trigger({
+          ...mealItem,
+          FoodTypeId: swrState1.data.foodTypeId as 1 | 2 | 3,
+          Reminder: swrState1.data.reminder as unknown as string,
+        });
         swrState.reset();
         swrState1.mutate();
         swrState2.mutate();
         swrState3.refreshData();
         navigation.navigate('Home');
-      };
+      }
     } catch (e) {
       console.error(e);
     }

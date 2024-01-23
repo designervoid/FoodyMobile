@@ -40,7 +40,9 @@ const ExpandableCalendar = (props: Props) => {
   }, []);
 
   const calculateFoodCarbs = useCallback((foodItems: FoodItems) => {
-    return foodItems.reduce((prev, curr) => prev + curr.carbohydrates, 0).toFixed(2);
+    return foodItems
+      .reduce((prev, curr) => prev + curr.carbohydrates, 0)
+      .toFixed(2);
   }, []);
 
   const calculateFoodSugar = useCallback((foodItems: FoodItems) => {
@@ -48,7 +50,9 @@ const ExpandableCalendar = (props: Props) => {
   }, []);
 
   const calculateFoodCholesterol = useCallback((foodItems: FoodItems) => {
-    return foodItems.reduce((prev, curr) => prev + curr.cholesterol, 0).toFixed(2);
+    return foodItems
+      .reduce((prev, curr) => prev + curr.cholesterol, 0)
+      .toFixed(2);
   }, []);
 
   const agendaItems = useMemo(() => {
@@ -56,25 +60,27 @@ const ExpandableCalendar = (props: Props) => {
       const date = item.reminder.toString().split('T')[0];
       let data;
       if (item.foodItems && item.foodItems.length > 0) {
-        data = [{
-          title: (
-            <View>
+        data = [
+          {
+            title: (
               <View>
-                <Text>{item.foodType.name}</Text>
-                <Text>{item.id}</Text>
+                <View>
+                  <Text>{item.foodType.name}</Text>
+                  <Text>{item.id}</Text>
+                </View>
               </View>
-            </View>
-          ),
-          foodType: item.foodType?.name || 'Unknown Type',
-          nutrients: `Fat: ${calculateFoodFat(
-            item.foodItems,
-          )}, Carbs: ${calculateFoodCarbs(
-            item.foodItems,
-          )}, Sugar: ${calculateFoodSugar(
-            item.foodItems,
-          )}, Cholesterol: ${calculateFoodCholesterol(item.foodItems)}`,
-          id: item.id,
-        }];
+            ),
+            foodType: item.foodType?.name || 'Unknown Type',
+            nutrients: `Fat: ${calculateFoodFat(
+              item.foodItems,
+            )}, Carbs: ${calculateFoodCarbs(
+              item.foodItems,
+            )}, Sugar: ${calculateFoodSugar(
+              item.foodItems,
+            )}, Cholesterol: ${calculateFoodCholesterol(item.foodItems)}`,
+            id: item.id,
+          },
+        ];
       } else {
         data = [
           {
@@ -95,9 +101,7 @@ const ExpandableCalendar = (props: Props) => {
       const id = item.id;
       return {title: date, data, id};
     });
-    items?.sort(
-      (a, b) => a.id - b.id,
-    );
+    items?.sort((a, b) => a.id - b.id);
     return items;
   }, [
     mealItems,
@@ -153,7 +157,7 @@ const ExpandableCalendar = (props: Props) => {
         />
       )}
       <AgendaList
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{paddingBottom: 100}}
         sections={agendaItems || []}
         renderItem={renderItem}
         sectionStyle={styles.section}
