@@ -96,3 +96,4 @@ To learn more about React Native, take a look at the following resources:
 6. Theme
 7. Internationalization
 8. Typography Components
+9. Select Improvments (Decomposition again)
