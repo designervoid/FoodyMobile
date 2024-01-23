@@ -47,7 +47,7 @@ const renderFoodItem = ({item}: {item: FoodItem}) => {
         {item.imageUrl && <Image src={item.imageUrl} style={styles.image} />}
       </View>
       <View style={styles.foodItemInfo}>
-        <Text style={styles.foodItemName}>{item.name}</Text>
+        <Text style={styles.foodItemName}>{item.name ?? 'No title 🙁'}</Text>
         <Text>Id: {item.id}</Text>
         <Rating id={item.id} />
       </View>
@@ -58,11 +58,11 @@ const renderFoodItem = ({item}: {item: FoodItem}) => {
 const renderFoodItemCheckbox = (q: FoodItem) => {
   return (
     <View key={q.id} style={styles.foodItemContainer}>
-      <View>
+      <View style={styles.imageWrapperFoodItem}>
         {q.imageUrl && <Image src={q.imageUrl} style={styles.image} />}
       </View>
       <View style={styles.foodItemInfo}>
-        <Text style={styles.foodItemName}>{q.name}</Text>
+        <Text style={styles.foodItemName}>{q.name ?? 'No title 🙁'}</Text>
         <Text>Id: {q.id}</Text>
         <Rating id={q.id} />
       </View>
@@ -103,7 +103,7 @@ export function MealEditScreen(props: Props) {
   return (
     <View>
       <ScrollView contentContainerStyle={{paddingBottom: 100}}>
-        <Text style={[styles.h1, styles.px20, styles.py20]}>My foods</Text>
+        <Text style={[styles.h1, styles.px20, styles.py20]}>My meal {swrState0.data?.reminder?.toString?.()}</Text>
         <View>
           {swrState0.data?.foodItems.map(item => renderFoodItem({item}))}
         </View>
@@ -119,7 +119,7 @@ export function MealEditScreen(props: Props) {
         onPress={() => {
           handleAddMealItem({FoodItemIds: ids0});
         }}>
-        Save
+          {swrState2.isMutating ? 'Saving food into meal...' : 'Save'}
       </BottomScreenButton>
     </View>
   );
@@ -145,11 +145,11 @@ const styles = StyleSheet.create({
     color: 'grey',
   },
   image: {
-    width: 102,
-    height: 102,
+    width: 80,
+    height: 80,
     padding: 20,
   },
-  imageWrapperFoodItem: {width: 103, display: 'flex', justifyContent: 'center'},
+  imageWrapperFoodItem: {width: 103, display: 'flex', justifyContent: 'center', alignItems: 'center'},
   iconStyle: {borderColor: 'green', borderRadius: 5},
   innerIconStyle: {
     borderWidth: 2,
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     paddingBottom: 10,
   },
-  foodItemInfo: {marginVertical: 0, paddingBottom: 10},
+  foodItemInfo: {marginVertical: 0, paddingBottom: 0},
   h1: {
     fontSize: 20,
     fontWeight: 'bold',
