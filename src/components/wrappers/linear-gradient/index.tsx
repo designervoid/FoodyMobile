@@ -1,23 +1,21 @@
 import React from "react";
-import {
-  Canvas,
-  Rect,
-  LinearGradient as LinearGradientBase,
-  Skia,
-  Shader,
-  vec
-} from "@shopify/react-native-skia";
+import { Canvas, Rect, LinearGradient as LinearGradientBase, vec } from "@shopify/react-native-skia";
 
-export function LinearGradient() {
+export function LinearGradient({ percentage = 30 }) {
+  const fullWidth = 100;
+  const gradientWidth = fullWidth;
+  const greyOverlayWidth = fullWidth * (1 - percentage / 100);
+
   return (
-    <Canvas style={{ flex: 1, height: 1000 }}>
-      <Rect x={0} y={0} width={100} height={100}>
-        <LinearGradientBase
+    <Canvas style={{ flex: 1, height: 8 }}>
+      <Rect x={0} y={0} width={gradientWidth} height={8}>
+        <LinearGradientBase 
           start={vec(0, 0)}
-          end={vec(256, 256)}
-          colors={["blue", "yellow"]}
+          end={vec(fullWidth, 8)}
+          colors={["red", "yellow", "green"]}
         />
       </Rect>
+      <Rect x={fullWidth - greyOverlayWidth} y={0} width={greyOverlayWidth} height={8} color="lightgrey" />
     </Canvas>
   );
 };

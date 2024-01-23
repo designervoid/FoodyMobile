@@ -1,4 +1,4 @@
-import React, { useEffect, useId } from 'react';
+import React, { ReactNode, useEffect, useId } from 'react';
 import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {
   Canvas,
@@ -30,7 +30,7 @@ function Rating({id}: {id: number | string}) {
     return <Text>Loading...</Text>;
   }
 
-  return <Text>{swrState.data?.rating}</Text>;
+  return <><LinearGradient percentage={swrState.data?.rating} /><Text>{swrState.data?.rating}</Text></>;
 }
 
 const ids = atom<number[]>([]);
@@ -63,7 +63,6 @@ export function MealEditScreen(props: Props) {
       <View
         key={q.id}
         style={{
-          height: 103.29,
           paddingHorizontal: 20,
           paddingVertical: 13,
           borderRadius: 10,
@@ -93,7 +92,6 @@ export function MealEditScreen(props: Props) {
           }}
         />
         <View style={{}}>
-          <LinearGradient />
           <Rating id={q.id} />
           <Text style={{marginLeft: 5}}>Id: {q.id}</Text>
           <Text style={{marginLeft: 5}}>{`Fat: ${q.fat}`}</Text>

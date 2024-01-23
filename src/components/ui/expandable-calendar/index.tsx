@@ -73,7 +73,6 @@ const ExpandableCalendar = (props: Props) => {
           )}, Sugar: ${calculateFoodSugar(
             item.foodItems,
           )}, Cholesterol: ${calculateFoodCholesterol(item.foodItems)}`,
-          imageUrl: '',
           id: item.id,
         }];
       } else {
@@ -89,7 +88,6 @@ const ExpandableCalendar = (props: Props) => {
             ),
             foodType: 'N/A',
             nutrients: 'N/A',
-            imageUrl: '',
             id: item.id,
           },
         ];
