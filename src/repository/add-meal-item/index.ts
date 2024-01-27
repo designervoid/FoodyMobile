@@ -9,7 +9,7 @@ import useSWRMutation from 'swr/mutation';
 type MealItem = {
   FoodItemIds: number[];
   FoodTypeId: 1 | 2 | 3;
-  Reminder: string;
+  Reminder: number;
 };
 
 async function addMealItem(url: string, {arg}: {arg: MealItem}) {

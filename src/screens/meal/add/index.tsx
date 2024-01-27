@@ -61,7 +61,7 @@ export function MealAddScreen(props: Props) {
             handleAddMealItem({
               FoodTypeId: foodTypeId as 1 | 2 | 3,
               FoodItemIds: [],
-              Reminder: date,
+              Reminder: new Date(date).getTime(),
             });
           }
         }}
