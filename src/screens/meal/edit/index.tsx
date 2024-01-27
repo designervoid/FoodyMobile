@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 
 import {useStore} from '@nanostores/react';
@@ -93,6 +93,22 @@ export function MealEditScreen(props: Props) {
   const {swrState: swrState2, handleAddMealItem} = useEditMealItem(id);
   const ids0 = useStore(ids);
 
+  const iso8601 = useMemo(() => {
+    return swrState0?.data?.reminder.replace('Z', '');
+  }, [swrState0?.data?.reminder]);
+
+  const iso8601Splitted = useMemo(() => {
+    return iso8601?.split('T');
+  }, []);
+
+  const iso8601Date = useMemo(() => {
+    return iso8601Splitted?.[0];
+  }, []);
+
+  const iso8601Time = useMemo(() => {
+    return iso8601Splitted?.[1];
+  }, []);
+
   useEffect(() => {
     refreshData();
     return () => {
@@ -103,7 +119,7 @@ export function MealEditScreen(props: Props) {
   return (
     <View>
       <ScrollView contentContainerStyle={{paddingBottom: 100}}>
-        <Text style={[styles.h1, styles.px20, styles.py20]}>My meal {swrState0.data?.reminder?.toString?.()}</Text>
+        <Text style={[styles.h1, styles.px20, styles.py20]}>My meal {iso8601Date} {iso8601Time}</Text>
         <View>
           {swrState0.data?.foodItems.map(item => renderFoodItem({item}))}
         </View>

@@ -65,7 +65,7 @@ const ExpandableCalendar = (props: Props) => {
             title: (
               <View>
                 <View>
-                  <Text>{item.foodType.name}</Text>
+                  <Text>{item.foodType?.name}</Text>
                   <Text>{item.id}</Text>
                 </View>
               </View>
@@ -87,7 +87,7 @@ const ExpandableCalendar = (props: Props) => {
             title: (
               <View>
                 <View>
-                  <Text>{item.foodType.name}</Text>
+                  <Text>{item.foodType?.name}</Text>
                   <Text>{item.id}</Text>
                 </View>
               </View>

@@ -4,7 +4,7 @@ import {FoodType} from 'repository/get-food-types/interfaces';
 export interface MealItem {
   id: number;
   foodItemIds: number[];
-  reminder: Date;
+  reminder: string;
   foodTypeId: number;
   foodType: FoodType;
   foodItems: FoodItem[];

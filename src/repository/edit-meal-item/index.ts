@@ -10,7 +10,7 @@ import useSWRMutation from 'swr/mutation';
 type MealItem = {
   FoodItemIds?: number[];
   FoodTypeId?: 1 | 2 | 3;
-  Reminder?: string;
+  Reminder?: number;
 };
 
 async function editMealItem(url: string, {arg}: {arg: MealItem}) {
@@ -50,7 +50,7 @@ export function useEditMealItem(id: string) {
         await trigger({
           ...mealItem,
           FoodTypeId: swrState1.data.foodTypeId as 1 | 2 | 3,
-          Reminder: swrState1.data.reminder as unknown as string,
+          Reminder: new Date(swrState1.data.reminder).getTime(),
         });
         swrState.reset();
         swrState1.mutate();

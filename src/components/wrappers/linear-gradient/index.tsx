@@ -13,7 +13,7 @@ export function LinearGradient({percentage = 30}) {
   const greyOverlayWidth = fullWidth * (1 - percentage / 100);
 
   return (
-    <Canvas style={{height: 8}}>
+    <Canvas style={{height: 8, width: 100}}>
       <Rect x={0} y={0} width={gradientWidth} height={8}>
         <LinearGradientBase
           start={vec(0, 0)}
